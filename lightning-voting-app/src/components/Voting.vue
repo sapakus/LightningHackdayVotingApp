@@ -15,9 +15,12 @@
           </div>
           <div color="white" class="pt-3">
             <input id="signature" v-model="message_signature" placeholder="paste it here">
+            <v-btn flat icon color="primary" @click="verifySignature()">
+              <v-icon>arrow_forward</v-icon>
+            </v-btn>
           </div>
         </v-card>
-        <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+        <v-btn color="primary" @click="e6 = 2" :disabled="!isNodeVerified">Continue</v-btn>
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 2" step="2">
@@ -62,15 +65,52 @@
 
 <script>
 export default {
-  data() {
-    return {
-      e6: 1,
-      message_signature: ""
-    };
-  },
   name: "Voting",
   props: {
     msg: String
+  },
+  data() {
+    return {
+      e6: 1,
+      message_signature: "",
+      isNodeVerified: false,
+      node_id: ""
+    };
+  },
+  methods: {
+    verifySignature() {
+      this.$socket.emit("yo_election_server", {
+        subject: "VerifyMessage",
+        payload: {
+          msg: "satoshi",
+          signature: this.message_signature
+        },
+        from: "voting_ui"
+      });
+    }
+  },
+  sockets: {
+    yo_voting_ui(envelope) {
+      if (envelope.subject === "MessageVerified") {
+        //do something
+
+        console.log("MessageVerified");
+        console.log(envelope);
+
+        var msg = envelope.payload.msg;
+        var sig = envelope.payload.signature;
+        var node_id = envelope.payload.node_id;
+
+        if (
+          msg === "satoshi" &&
+          sig === this.message_signature &&
+          envelope.payload.valid
+        ) {
+          this.node_id = node_id;
+          this.isNodeVerified = true;
+        }
+      }
+    }
   }
 };
 </script>

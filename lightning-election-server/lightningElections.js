@@ -70,28 +70,39 @@ const subscribeToInvoices = (envelope, cb) => {
 };
 
 const verifyMessage = (envelope, cb) => {
-  lnd.verifyMessage(
-    {
-      msg: envelope.payload.msg,
-      signature: envelope.payload.signature
-    },
-    (err, res) => {
-      if (err) {
-        cb(err);
-      } else {
-        var payload = {
-          msg: envelope.payload.msg,
-          signature: envelope.payload.signature,
-          valid: res.valid,
-          node_id: res.pubkey
-        };
-        cb(null, envelope.from, {
-          subject: "MessageVerified",
-          payload: payload
-        });
-      }
+  console.log("verifying message...");
+
+  var msgBytes = [];
+  var str = envelope.payload.msg;
+  var buffer = new Buffer(str, "utf8");
+  for (var i = 0; i < buffer.length; i++) {
+    msgBytes.push(buffer[i]);
+  }
+
+  const verifyMessageReq = {
+    msg: msgBytes,
+    signature: envelope.payload.signature
+  };
+
+  console.log(verifyMessageReq);
+
+  lnd.verifyMessage(verifyMessageReq, (err, res) => {
+    if (err) {
+      cb(err);
+    } else {
+      console.log(res);
+      var payload = {
+        msg: envelope.payload.msg,
+        signature: envelope.payload.signature,
+        valid: res.valid,
+        node_id: res.pubkey
+      };
+      cb(null, envelope.from, {
+        subject: "MessageVerified",
+        payload: payload
+      });
     }
-  );
+  });
 };
 
 module.exports = {
@@ -99,9 +110,9 @@ module.exports = {
     console.log("HANDLING LIGHTNING REQUESTS...");
 
     var requestHandlers = {
-      GetLightningInfo: this.getWalletInfo,
+      GetLightningInfo: getWalletInfo,
       // SubscribeToLightningInvoices: this.subscribeToInvoices,
-      VerifyMessage: this.verifyMessage
+      VerifyMessage: verifyMessage
     };
 
     const handler = requestHandlers[envelope.subject];

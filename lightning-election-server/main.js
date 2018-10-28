@@ -6,6 +6,7 @@ var lightning_elections = require("./lightningElections");
 
 const broadcast = (err, to, msg) => {
   if (err) {
+    console.log(err);
     return;
   }
   console.log(msg.subject);
@@ -15,16 +16,10 @@ const broadcast = (err, to, msg) => {
 const handleRequests = envelope => {
   console.warn(envelope);
   if (!!envelope.subject) {
-    if (envelope.subject.indexOf("Election") >= 0) {
-      lightning_elections.handleRequests(envelope, broadcast);
+    if (envelope.subject === "PING!") {
+      io.emit("messageChannel", "PONG!");
     } else {
-      switch (envelope.subject) {
-        case "PING!":
-          io.emit("messageChannel", "PONG!");
-          break;
-        default:
-          break;
-      }
+      lightning_elections.handleRequests(envelope, broadcast);
     }
   }
 };
