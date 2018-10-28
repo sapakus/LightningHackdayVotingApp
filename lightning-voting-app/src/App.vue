@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <v-app>
-      <HelloWorld msg="reckless ⚡️ voting" />
+      <Voting msg="reckless ⚡️ voting" />
     </v-app>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Voting from "./components/Voting.vue";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    Voting
   }
 };
 </script>

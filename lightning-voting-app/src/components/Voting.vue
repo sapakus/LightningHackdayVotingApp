@@ -67,7 +67,7 @@ export default {
       e6: 1
     };
   },
-  name: "HelloWorld",
+  name: "Voting",
   props: {
     msg: String
   }
