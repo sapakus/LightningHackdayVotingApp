@@ -4,38 +4,57 @@
 
     <v-stepper v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
-        Select an app
-        <small>Summarize if needed</small>
+        <v-bt id="section-title" @click="e6 = 1">What's your node?</v-bt>
+        <small>prove ownership of your node by signing a message</small>
       </v-stepper-step>
 
       <v-stepper-content step="1">
-        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+        <v-card color="grey lighten-3" class="py-3 mb-5">
+          <div>
+            Do `yourLightningNode.signMessage("satoshi")` and input signature below
+          </div>
+          <div color="white" class="pt-3">
+            <input id="signature" v-model="signature" placeholder="paste it here">
+          </div>
+        </v-card>
         <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
-        <v-btn flat>Cancel</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 2" step="2">Configure analytics for this app</v-stepper-step>
+      <v-stepper-step :complete="e6 > 2" step="2">
+        <v-bt id="section-title" @click="e6 = 2">Don't forget to vote</v-bt>
+      </v-stepper-step>
 
       <v-stepper-content step="2">
-        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+        <v-layout row wrap>
+          <v-flex v-for="i in 3" :key="`4${i}`" xs4>
+            <v-card id="lapp" class="py-3 ma-2">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                </div>
+              </v-card-title>
+
+              <v-card-actions class="ml-4">
+                <input type="checkbox" id="checkbox" v-model="checked">
+                <label for="checkbox">⚡️vote for me</label>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
         <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-        <v-btn flat>Cancel</v-btn>
+        <v-btn flat @click="e6 = 1">Back</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Select an ad format and name ad unit</v-stepper-step>
+      <v-stepper-step :complete="e6 > 3" step="3">
+        <v-bt id="section-title" @click="e6 = 3">Checkout results</v-bt>
+      </v-stepper-step>
 
       <v-stepper-content step="3">
         <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
         <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
-        <v-btn flat>Cancel</v-btn>
+        <v-btn flat @click="e6 = 2">Back</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="4">View setup instructions</v-stepper-step>
-      <v-stepper-content step="4">
-        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-        <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
-        <v-btn flat>Cancel</v-btn>
-      </v-stepper-content>
     </v-stepper>
 
   </div>
@@ -70,5 +89,17 @@ li {
 }
 a {
   color: #42b983;
+}
+#signature {
+  border: solid;
+  border-radius: 2px;
+  border-width: 1px;
+  text-align: center;
+}
+#lapp {
+  border: solid;
+}
+#section-title:hover {
+  cursor: pointer;
 }
 </style>

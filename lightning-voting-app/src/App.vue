@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <HelloWorld msg="Welcome to Your Vue.js App" />
+      <HelloWorld msg="reckless ⚡️ voting" />
     </v-app>
   </div>
 </template>
