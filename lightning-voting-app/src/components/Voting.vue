@@ -35,7 +35,7 @@
             <v-card id="lapp" class="py-3 ma-2">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">{{choice}}</h3>
+                  <h3 class="headline mb-0">{{choice.name}}</h3>
                 </div>
               </v-card-title>
 
@@ -87,9 +87,18 @@ export default {
       isNodeVerified: false,
       node_id: "",
       choices: [
-        "some cool demo",
-        "potato chips",
-        "the third world"
+        {
+          name: "some cool demo",
+          voteTotal: 0
+        },
+        {
+          name: "potato chips",
+          voteTotal: 0
+        },
+        {
+          name: "the third world",
+          voteTotal: 0
+        },
       ],
       vote_selection: ""
     };
@@ -107,7 +116,12 @@ export default {
     },
     castVote() {
       this.e6 = 3; // move to next step
-      console.log('DEBUG - Voting.vue - castVote() - this.vote_selection ', this.vote_selection);
+
+      this.choices.filter(choice => {
+        if (choice.name === this.vote_selection.name) {
+          choice.voteTotal++;
+        }
+      });
     }
   },
   sockets: {
