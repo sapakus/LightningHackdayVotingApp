@@ -9,12 +9,9 @@
       </v-stepper-step>
 
       <v-stepper-content step="1">
-        <v-card color="grey lighten-3" class="py-3 mb-5">
-          <div>
-            Do `yourLightningNode.signMessage("satoshi")` and input signature below
-          </div>
+        <v-card  class="py-3 mb-5">
           <div color="white" class="pt-3">
-            <input id="signature" v-model="message_signature" placeholder="paste it here">
+            <v-text-field placeholder="paste your node id here" v-model="node_id"></v-text-field>
             <v-btn flat icon color="primary" @click="verifySignature()">
               <v-icon>arrow_forward</v-icon>
             </v-btn>
@@ -165,12 +162,6 @@ li {
 }
 a {
   color: #42b983;
-}
-#signature {
-  border: solid;
-  border-radius: 2px;
-  border-width: 1px;
-  text-align: center;
 }
 #lapp {
   border: solid;

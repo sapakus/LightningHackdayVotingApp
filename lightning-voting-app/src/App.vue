@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <v-layout row wrap>
+      <!-- <v-layout row wrap>
         <v-flex>
           <v-card>
             <v-card-title> Ping Server</v-card-title>
@@ -15,7 +15,7 @@
           </v-card>
 
         </v-flex>
-      </v-layout>
+      </v-layout> -->
       <voting msg="reckless ⚡️ voting" />
     </v-app>
   </div>
