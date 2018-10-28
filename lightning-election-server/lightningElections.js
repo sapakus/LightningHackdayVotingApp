@@ -194,8 +194,9 @@ module.exports = {
 
     var requestHandlers = {
       GetLightningInfo: getWalletInfo,
-      SubscribeToVotes: subscribeToVotes,
       VerifyMessage: verifyMessage,
+      CreateVoteInvoice: createVoteInvoice,
+      SubscribeToVotes: subscribeToVotes,
       GetAllVotes: getAllVotes
     };
 
