@@ -4,7 +4,7 @@
 
     <v-stepper v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
-        <v-bt id="section-title" @click="e6 = 1">What's your node?</v-bt>
+        <v-btn id="section-title" @click="e6 = 1">What's your node?</v-btn>
         <small>prove ownership of your node by signing a message</small>
       </v-stepper-step>
 
@@ -14,14 +14,14 @@
             Do `yourLightningNode.signMessage("satoshi")` and input signature below
           </div>
           <div color="white" class="pt-3">
-            <input id="signature" v-model="signature" placeholder="paste it here">
+            <input id="signature" v-model="message_signature" placeholder="paste it here">
           </div>
         </v-card>
         <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 2" step="2">
-        <v-bt id="section-title" @click="e6 = 2">Don't forget to vote</v-bt>
+        <v-btn id="section-title" @click="e6 = 2">Don't forget to vote</v-btn>
       </v-stepper-step>
 
       <v-stepper-content step="2">
@@ -35,7 +35,7 @@
               </v-card-title>
 
               <v-card-actions class="ml-4">
-                <input type="checkbox" id="checkbox" v-model="checked">
+                <input type="checkbox" id="checkbox">
                 <label for="checkbox">⚡️vote for me</label>
               </v-card-actions>
             </v-card>
@@ -46,7 +46,7 @@
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 3" step="3">
-        <v-bt id="section-title" @click="e6 = 3">Checkout results</v-bt>
+        <v-btn id="section-title" @click="e6 = 3">Checkout results</v-btn>
       </v-stepper-step>
 
       <v-stepper-content step="3">
@@ -64,7 +64,8 @@
 export default {
   data() {
     return {
-      e6: 1
+      e6: 1,
+      message_signature: ""
     };
   },
   name: "Voting",

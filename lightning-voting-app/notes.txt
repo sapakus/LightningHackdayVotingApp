@@ -1,0 +1,32 @@
+
+
+
+
+$node = GetUserNode.
+
+
+$VerifyNode = (lncli getndoeinfo $node).
+
+If $VerifyNode
+  for choice in choices:
+  -- lncli AddInvoice --memo=$choice + "node";
+
+
+
+Only the First one paid counts?  Only the last one paid gets counted?
+
+
+lncli AddInvoice:
+
+
+
+
+Who are you?
+
+NodeID: 123123123213
+
+Choice: 1,2,3
+
+
+
+
