@@ -24,27 +24,28 @@
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 2" step="2">
+        <!-- the one with :disabled is the one we should use, just leaving commented so i can move around -->
+        <!-- <v-btn id="section-title" @click="e6 = 2" :disabled="!isNodeVerified">Don't forget to vote</v-btn> -->
         <v-btn id="section-title" @click="e6 = 2">Don't forget to vote</v-btn>
       </v-stepper-step>
 
       <v-stepper-content step="2">
         <v-layout row wrap>
-          <v-flex v-for="i in 3" :key="`4${i}`" xs4>
+          <v-flex v-for="choice in choices" :key="choice.id" xs4>
             <v-card id="lapp" class="py-3 ma-2">
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                  <h3 class="headline mb-0">{{choice}}</h3>
                 </div>
               </v-card-title>
 
               <v-card-actions class="ml-4">
-                <input type="checkbox" id="checkbox">
-                <label for="checkbox">⚡️vote for me</label>
+                <label><input type="radio" name="choice" v-model="vote_selection" v-bind:value="choice">⚡️vote for me</label>
               </v-card-actions>
             </v-card>
           </v-flex>
         </v-layout>
-        <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+        <v-btn color="primary" @click="castVote()">Cast vote</v-btn>
         <v-btn flat @click="e6 = 1">Back</v-btn>
       </v-stepper-content>
 
@@ -74,7 +75,13 @@ export default {
       e6: 1,
       message_signature: "",
       isNodeVerified: false,
-      node_id: ""
+      node_id: "",
+      choices: [
+        "some cool demo",
+        "potato chips",
+        "the third world"
+      ],
+      vote_selection: ""
     };
   },
   methods: {
@@ -87,6 +94,10 @@ export default {
         },
         from: "voting_ui"
       });
+    },
+    castVote() {
+      this.e6 = 3; // move to next step
+      console.log('DEBUG - Voting.vue - castVote() - this.vote_selection ', this.vote_selection);
     }
   },
   sockets: {
