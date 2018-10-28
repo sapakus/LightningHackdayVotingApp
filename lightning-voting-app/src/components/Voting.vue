@@ -5,7 +5,7 @@
     <v-stepper v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
         <v-btn id="section-title" @click="e6 = 1">What's your node?</v-btn>
-        <small>prove ownership of your node by signing a message</small>
+        <small>provide us with your node id</small>
       </v-stepper-step>
 
       <v-stepper-content step="1">
@@ -63,7 +63,17 @@
       </v-stepper-step>
 
       <v-stepper-content step="4">
-        <v-card color="grey lighten-3" class="mb-5" height="200px"></v-card>
+        <v-layout row wrap>
+          <v-flex v-for="choice in choices" :key="choice.id" xs4>
+            <v-card id="lapp" class="py-3 ma-2">
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">{{choice.name}}: {{choice.voteTotal}}</h3>
+                </div>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </v-stepper-content>
 
     </v-stepper>
