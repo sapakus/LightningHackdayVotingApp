@@ -57,16 +57,69 @@ const getWalletInfo = (envelope, cb) => {
   }
 };
 
-const subscribeToInvoices = (envelope, cb) => {
-  console.log("Subscribing To Invoices");
+const subscribeToVotes = (envelope, cb) => {
+  console.log("Subscribing To Votes");
   const sub = lnd.subscribeInvoices({});
   sub.on("data", invoice => {
     console.log(invoice);
-    cb(null, envelope.from, {
-      subject: "InvoiceUpdated",
-      payload: invoice
-    });
+
+    const vote = parseMemoAsVote(invoice.memo);
+    if (vote && invoice.settled) {
+      const payload = {
+        vote: vote,
+        invoice: invoice
+      };
+      cb(null, envelope.from, {
+        subject: "VoteReceived",
+        payload: payload
+      });
+    }
   });
+};
+
+const getAllVotes = (envelope, cb) => {
+  const votes = {};
+
+  lnd.listInvoices(
+    {
+      pending_only: false
+    },
+    (err, response) => {
+      if (err) {
+        cb(err);
+      }
+
+      if (response) {
+        const voteInvoices = response.invoices.filter(
+          inv => parseMemoAsVote(inv.memo) != null
+        );
+
+        voteInvoices.forEach(v => {
+          votes[voteInvoices.node_id] = v;
+        });
+
+        cb(null, envelope.from, {
+          subject: "GotAllVotes",
+          payload: votes
+        });
+      }
+    }
+  );
+};
+
+const parseMemoAsVote = memo => {
+  const x = memo.split(":");
+
+  if (x.length === 3 && x[0] === "TEST_ELECTION") {
+    const vote = {
+      node_id: x[1],
+      vote_choice: x[2],
+      invoice: invoice
+    };
+    return vote;
+  } else {
+    return null;
+  }
 };
 
 const verifyMessage = (envelope, cb) => {
@@ -105,14 +158,45 @@ const verifyMessage = (envelope, cb) => {
   });
 };
 
+const createVoteInvoice = (envelope, cb) => {
+  const memo = `TEST_ELECTION:${envelope.payload.node_id}:${
+    envelope.payload.vote_choice
+  }`;
+
+  memo = memo.substring(0, 250);
+
+  lnd.addInvoice(
+    {
+      memo: memo,
+      value: 0,
+      expiry: 3600,
+      private: true
+    },
+    (err, response) => {
+      if (err) {
+        cb(err);
+      } else if (response) {
+        const invoice = { invoice: response.payment_request };
+        cb(null, msg.from, {
+          subject: "VotingInvoiceCreated",
+          payload: invoice
+        });
+      }
+    }
+  );
+
+  //cb
+};
+
 module.exports = {
   handleRequests(envelope, cb) {
     console.log("HANDLING LIGHTNING REQUESTS...");
 
     var requestHandlers = {
       GetLightningInfo: getWalletInfo,
-      // SubscribeToLightningInvoices: this.subscribeToInvoices,
-      VerifyMessage: verifyMessage
+      SubscribeToVotes: subscribeToVotes,
+      VerifyMessage: verifyMessage,
+      GetAllVotes: getAllVotes
     };
 
     const handler = requestHandlers[envelope.subject];
