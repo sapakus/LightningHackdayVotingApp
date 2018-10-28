@@ -26,7 +26,7 @@
       <v-stepper-step :complete="e6 > 2" step="2">
         <!-- the one with :disabled is the one we should use, just leaving commented so i can move around -->
         <!-- <v-btn id="section-title" @click="e6 = 2" :disabled="!isNodeVerified">Don't forget to vote</v-btn> -->
-        <v-btn id="section-title" @click="e6 = 2">Don't forget to vote</v-btn>
+        <v-btn id="section-title" @click="e6 = 2">Take your pick</v-btn>
       </v-stepper-step>
 
       <v-stepper-content step="2">
@@ -50,13 +50,23 @@
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 3" step="3">
-        <v-btn id="section-title" @click="e6 = 3">Checkout results</v-btn>
+        <v-btn id="section-title" @click="e6 = 3">Cast vote</v-btn>
       </v-stepper-step>
 
       <v-stepper-content step="3">
-        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+        <v-card color="grey lighten-3" class="mb-5">
+          [QR invoce info]
+        </v-card>
         <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
         <v-btn flat @click="e6 = 2">Back</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step :complete="e6 > 4" step="4">
+        <v-btn id="section-title" @click="e6 = 4">Checkout results</v-btn>
+      </v-stepper-step>
+
+      <v-stepper-content step="4">
+        <v-card color="grey lighten-3" class="mb-5" height="200px"></v-card>
       </v-stepper-content>
 
     </v-stepper>
